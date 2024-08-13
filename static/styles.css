@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;  /* Evita que a tela se mova quando o teclado abre */
+}
+
+header {
+    background-color: #2E7D32;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    justify-content: space-between;
+}
+
+header .icon {
+    height: 50px;
+    margin-right: 10px;
+}
+
+#chat-box {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 5px;
+    overflow-y: auto;  /* Garante que o chat seja rolável */
+    max-height: calc(100vh - 200px); /* Ajusta a altura para ocupar bem o espaço */
+}
+
+#input-area {
+    display: flex;
+    padding: 10px;
+    background-color: #E8F5E9;
+    border-top: 1px solid #ccc;
+    flex-wrap: wrap;
+    min-height: 60px;  /* Garante que o input-area tenha uma altura mínima */
+}
+
+input[type=text], input[type=file] {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 0;
+}
+
+button {
+    background-color: #388E3C;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2E7D32;
+}
+
+footer {
+    background-color: #2E7D32;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.media {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 18px;
+    }
+
+    header .icon {
+        height: 30px;
+        margin-right: 5px;
+    }
+
+    #input-area {
+        flex-direction: column;
+    }
+
+    button {
+        padding: 10px;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    input[type=text], input[type=file] {
+        margin-bottom: 10px;
+    }
+}

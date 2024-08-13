@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniChat</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='chat-icon.png') }}" alt="Chat Icon" class="icon">
+        <h1>UNICHAT</h1>
+    </header>
+
+    <div id="chat-box"></div>
+
+    <div id="input-area">
+        <input type="text" id="username" placeholder="Digite seu nome">
+        <input type="text" id="message" placeholder="Digite sua mensagem" onkeydown="checkEnter(event)">
+        <button onclick="sendMessage()">Enviar</button>
+        <input type="file" id="media-upload" accept="image/*" onchange="sendMedia()">
+        <button onclick="confirmSendMedia()">Enviar</button>
+
+    </div>
+
+    <footer>
+        <p>By Wellington Barbosa</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.0/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var username = '';
+
+        var MAX_MESSAGES = 100;  // Limite de mensagens a serem exibidas no chat
+
+        socket.on('message', function(msg) {
+            var chatBox = document.getElementById('chat-box');
+            if (chatBox.children.length >= MAX_MESSAGES) {
+                chatBox.removeChild(chatBox.firstChild);
+            }
+            chatBox.innerHTML += '<p><b>' + msg.username + ':</b> ' + msg.text + '</p>';
+            chatBox.scrollTop = chatBox.scrollHeight;  // Rolagem automática
+        });
+
+        socket.on('media', function(data) {
+            var chatBox = document.getElementById('chat-box');
+            if (chatBox.children.length >= MAX_MESSAGES) {
+                chatBox.removeChild(chatBox.firstChild);
+            }
+            chatBox.innerHTML += '<p><b>' + data.username + ':</b><br><img src="' + data.media + '" alt="Media" class="media"></p>';
+            chatBox.scrollTop = chatBox.scrollHeight;  // Rolagem automática
+        });
+
+        function sendMessage() {
+            if (!username) {
+                username = document.getElementById('username').value;
+            }
+            var message = document.getElementById('message').value;
+            if (message.trim() !== '') {
+                socket.emit('message', {'username': username, 'text': message});
+                document.getElementById('message').value = '';
+            }
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        function sendMedia() {
+            if (!username) {
+                username = document.getElementById('username').value;
+            }
+            var file = document.getElementById('media-upload').files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(evt) {
+                // Adiciona a mídia ao campo de mensagens para visualização
+                var chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += '<p><b>' + username + ':</b><br><img src="' + evt.target.result + '" alt="Media" class="media"></p>';
+                chatBox.scrollTop = chatBox.scrollHeight;  // Rolagem automática
+
+                // Redefine o campo de upload após o envio
+                document.getElementById('media-upload').value = '';
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function confirmSendMedia() {
+            var file = document.getElementById('media-upload').files[0];
+            if (file) {
+                sendMedia(); // Envia a mídia apenas quando o usuário clica em enviar
+            }
+        }
+
+        window.addEventListener('resize', function() {
+            if (document.activeElement.tagName === 'INPUT') {
+                document.getElementById('chat-box').style.maxHeight = 'calc(50vh - 200px)';
+            } else {
+                document.getElementById('chat-box').style.maxHeight = 'calc(100vh - 200px)';
+            }
+        });
+
+    </script>
+</body>
+</html>
