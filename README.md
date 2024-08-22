@@ -17,7 +17,7 @@ Este é um projeto de aplicação de chat multi-usuários desenvolvido em Python
 ## Particularidades
 
 - **Não Armazenamento de Conversas:** As conversas não são armazenadas no servidor, garantindo privacidade.
-- **VPN Necessária:** A aplicação está configurada para rodar em um ambiente local acessível por VPN, permitindo que colaboradores conectados à mesma rede VPN possam acessar o chat.
+- **VPN:** A aplicação está configurada para rodar em um ambiente local acessível por VPN, permitindo que colaboradores conectados à mesma rede VPN possam acessar o chat.
 - **Problemas Conhecidos:**
   - Se muitas mensagens forem enviadas de uma vez, a rolagem automática pode parar de funcionar, necessitando um ajuste manual.
   - Em algumas telas de smartphones, pode haver desalinhamento ou sumiço de informações ao alternar entre o teclado e o campo de mensagens.
